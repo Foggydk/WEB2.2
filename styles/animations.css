@@ -1,0 +1,259 @@
+﻿/* styles/animations.css */
+
+/* Widget Appear Animation */
+@keyframes widget-appear {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.widget {
+    animation: widget-appear 0.4s ease-out forwards;
+}
+
+    /* Staggered Animation */
+    .widget:nth-child(1) {
+        animation-delay: 0s;
+    }
+
+    .widget:nth-child(2) {
+        animation-delay: 0.1s;
+    }
+
+    .widget:nth-child(3) {
+        animation-delay: 0.2s;
+    }
+
+    .widget:nth-child(4) {
+        animation-delay: 0.3s;
+    }
+
+    .widget:nth-child(5) {
+        animation-delay: 0.4s;
+    }
+
+    .widget:nth-child(6) {
+        animation-delay: 0.5s;
+    }
+
+/* Content Fade In */
+@keyframes content-fade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.widget-content {
+    animation: content-fade 0.6s ease-out 0.2s both;
+}
+
+/* Widget Remove Animation */
+@keyframes widget-remove {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(0.9);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+.widget.removing {
+    animation: widget-remove 0.3s ease-out forwards;
+    pointer-events: none;
+}
+
+/* Spin Animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.refresh-btn.loading i {
+    animation: spin 1s linear infinite;
+}
+
+/* Slide In Animation */
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.list-item {
+    animation: slide-in 0.3s ease-out;
+}
+
+/* Pulse Animation */
+@keyframes gentle-pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.fact-text.updated {
+    animation: gentle-pulse 0.5s ease-out;
+}
+
+/* Shimmer Loading Effect */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.loading-progress {
+    background: linear-gradient(90deg, var(--accent) 25%, var(--accent-secondary) 50%, var(--accent) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 9999;
+}
+
+/* Slide Down Animation */
+@keyframes slide-down {
+    from {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+
+.filter-panel {
+    animation: slide-down 0.3s ease-out;
+    transform-origin: top;
+}
+
+/* Shake Animation for Errors */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+.error {
+    animation: shake 0.5s ease-out;
+}
+
+/* Highlight Animation */
+@keyframes highlight {
+    0% {
+        background-color: var(--accent);
+        transform: scale(1.05);
+    }
+
+    100% {
+        background-color: transparent;
+        transform: scale(1);
+    }
+}
+
+.list-item.new {
+    animation: highlight 1s ease-out;
+}
+
+/* Count Up Animation */
+@keyframes count-up {
+    0% {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.fact-counter {
+    animation: count-up 0.3s ease-out;
+}
+
+/* Hover Effects */
+.widget-controls button {
+    transition: all 0.2s ease;
+}
+
+    .widget-controls button:hover {
+        transform: scale(1.1) rotate(5deg);
+        color: var(--accent);
+    }
+
+    .widget-controls button:active {
+        transform: scale(0.95);
+    }
+
+/* Button Pulse Effect */
+@keyframes btn-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(90, 141, 238, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(90, 141, 238, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(90, 141, 238, 0);
+    }
+}
+
+.btn-primary {
+    animation: btn-pulse 2s infinite;
+}

@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Gamer Dashboard</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <h1>🎮 Gamer Dashboard</h1>
+                    <p class="subtitle">Случайные игры, цены, новости и список желаний</p>
+                </div>
+                <div class="header-controls">
+                    <button id="reset-layout" class="btn-icon" title="Сбросить раскладку">
+                        <i class="fas fa-undo-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="widget-controls">
+                <button id="add-random-game" class="btn btn-primary">
+                    <i class="fas fa-dice"></i> Случайная игра
+                </button>
+                <button id="add-game-news" class="btn btn-secondary">
+                    <i class="fas fa-newspaper"></i> Новости
+                </button>
+                <button id="add-game-fact" class="btn btn-accent">
+                    <i class="fas fa-lightbulb"></i> Факт
+                </button>
+                <button id="add-game-list" class="btn btn-success">
+                    <i class="fas fa-list"></i> Список игр
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div id="dashboard-container" class="dashboard-grid">
+                <!-- Виджеты будут добавляться сюда динамически -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Данные: RAWG API, FreeToGame API | localStorage для сохранений</p>
+            <p>© 2026 Gamer Dashboard | Сделано с 🎮 для настоящих геймеров</p>
+        </div>
+    </footer>
+
+    <!-- Шаблоны для уведомлений -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

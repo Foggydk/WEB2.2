@@ -164,54 +164,118 @@ export class RandomGameWidget extends UIComponent {
     }
 
     renderGameInfo(game) {
-        const stores = game.stores || [];
-        const description = game.description_raw || game.description || 'Описание отсутствует';
-        const shortDescription = description.length > 200
-            ? description.substring(0, 200) + '...'
-            : description;
-
+    const stores = game.stores || [];
+    
+    // Функция для получения правильной ссылки на магазин
+    const getStoreUrl = (store) => {
+        const storeSlug = store.store.slug;
+        const gameName = game.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        
+        // Маппинг магазинов на реальные URL
+        const storeUrls = {
+            'steam': `https://store.steampowered.com/search/?term=${encodeURIComponent(game.name)}`,
+            'epic-games': `https://store.epicgames.com/ru/p/${gameName}`,
+            'gog': `https://www.gog.com/games?query=${encodeURIComponent(game.name)}`,
+            'playstation': `https://store.playstation.com/ru-ru/search/${encodeURIComponent(game.name)}`,
+            'xbox': `https://www.xbox.com/ru-ru/search?q=${encodeURIComponent(game.name)}`,
+            'nintendo': `https://www.nintendo.ru/search/?q=${encodeURIComponent(game.name)}`,
+            'origin': `https://www.ea.com/ru-ru/games/search?q=${encodeURIComponent(game.name)}`,
+            'ubisoft': `https://store.ubisoft.com/ru/search?q=${encodeURIComponent(game.name)}`,
+            'microsoft': `https://www.microsoft.com/ru-ru/search?q=${encodeURIComponent(game.name)}`
+        };
+        
+        // Если есть прямой URL от API, используем его
+        if (store.url && !store.url.includes('api.rawg.io')) {
+            return store.url;
+        }
+        
+        // Иначе используем поиск по магазину
+        return storeUrls[storeSlug] || `https://www.google.com/search?q=${encodeURIComponent(game.name + ' купить')}`;
+    };
+    
+    const storesList = stores.slice(0, 4).map(store => {
+        const storeUrl = getStoreUrl(store);
+        const storeIcon = CONFIG.STORE_ICONS[store.store.slug] || 'fa-solid fa-store';
+        
         return `
-            <div class="game-details">
-                ${game.background_image ?
-                `<img src="${game.background_image}" alt="${game.name}" class="game-image" loading="lazy">` :
+            <a href="${storeUrl}" target="_blank" rel="noopener noreferrer" class="store-link">
+                <i class="${storeIcon}"></i>
+                ${store.store.name}
+                <span class="price"><i class="fas fa-external-link-alt"></i> Перейти</span>
+            </a>
+        `;
+    }).join('');
+    
+    // Получаем русское описание
+    const englishDescription = game.description_raw || game.description || '';
+    const russianDescription = this.getRussianDescription(game.name, englishDescription);
+    const shortDescription = russianDescription.length > 200 
+        ? russianDescription.substring(0, 200) + '...' 
+        : russianDescription;
+    
+    return `
+        <div class="game-details">
+            ${game.background_image ? 
+                `<img src="${game.background_image}" alt="${game.name}" class="game-image" loading="lazy">` : 
                 '<div class="no-image">🎮 Нет изображения</div>'
             }
-                
-                <h4>${game.name}</h4>
-                
-                <div class="game-meta">
-                    <span class="rating"><i class="fas fa-star" style="color: gold;"></i> ${game.rating || 'N/A'}/5</span>
-                    <span class="released"><i class="far fa-calendar-alt"></i> ${game.released || 'Неизвестно'}</span>
-                </div>
-                
-                <div class="game-genres">
-                    ${game.genres ? game.genres.map(g =>
-                `<span class="genre-tag">${g.name}</span>`
-            ).join('') : ''}
-                </div>
-                
-                <p class="game-description">
-                    ${shortDescription}
-                </p>
-                
-                ${stores.length > 0 ? `
-                    <div class="game-stores">
-                        <h5><i class="fas fa-shopping-cart"></i> Где купить:</h5>
-                        <div class="stores-list">
-                            ${stores.slice(0, 5).map(store => `
-                                <a href="${store.url}" target="_blank" rel="noopener noreferrer" class="store-link">
-                                    <i class="${CONFIG.STORE_ICONS[store.store.slug] || 'fa-solid fa-store'}"></i>
-                                    ${store.store.name}
-                                    <span class="price">💰 Цену уточняйте</span>
-                                </a>
-                            `).join('')}
-                        </div>
-                    </div>
-                ` : '<p class="no-stores">Информация о магазинах отсутствует</p>'}
+            
+            <h4>${game.name}</h4>
+            
+            <div class="game-meta">
+                <span class="rating"><i class="fas fa-star" style="color: gold;"></i> ${game.rating || 'N/A'}/5</span>
+                <span class="released"><i class="far fa-calendar-alt"></i> ${game.released ? game.released.split('-')[0] : 'Неизвестно'}</span>
             </div>
-        `;
-    }
+            
+            <div class="game-genres">
+                ${game.genres ? game.genres.map(g => 
+                    `<span class="genre-tag">${g.name}</span>`
+                ).join('') : ''}
+            </div>
+            
+            <p class="game-description">
+                ${shortDescription}
+            </p>
+            
+            ${stores.length > 0 ? `
+                <div class="game-stores">
+                    <h5><i class="fas fa-shopping-cart"></i> Где купить:</h5>
+                    <div class="stores-list">
+                        ${storesList}
+                    </div>
+                </div>
+            ` : `
+                <div class="game-stores">
+                    <h5><i class="fas fa-shopping-cart"></i> Где купить:</h5>
+                    <div class="stores-list">
+                        <a href="https://store.steampowered.com/search/?term=${encodeURIComponent(game.name)}" target="_blank" class="store-link">
+                            <i class="fa-brands fa-steam"></i> Steam
+                            <span class="price"><i class="fas fa-external-link-alt"></i> Поиск</span>
+                        </a>
+                        <a href="https://www.google.com/search?q=${encodeURIComponent(game.name + ' купить')}" target="_blank" class="store-link">
+                            <i class="fas fa-search"></i> Google
+                            <span class="price"><i class="fas fa-external-link-alt"></i> Поиск</span>
+                        </a>
+                    </div>
+                </div>
+            `}
+        </div>
+    `;
+}
 
+// Добавить метод для русских описаний
+getRussianDescription(gameName, defaultDescription) {
+    const descriptions = {
+        "The Witcher 3: Wild Hunt": "Ведьмак 3: Дикая Охота — это ролевая игра с открытым миром, где вы играете за Геральта из Ривии, профессионального охотника на чудовищ. Вас ждет эпическое приключение в мрачном фэнтезийном мире.",
+        "Red Dead Redemption 2": "Red Dead Redemption 2 — это вестерн в открытом мире от создателей GTA. Вы играете за Артура Моргана, члена банды Датча ван дер Линде, который пытается выжить в Америке на закате эпохи Дикого Запада.",
+        "Cyberpunk 2077": "Cyberpunk 2077 — это RPG в открытом мире, действие которой происходит в Найт-Сити. Вы играете за Ви, наемника, который ищет бессмертие в мире, где правят корпорации и технологии.",
+        "Grand Theft Auto V": "GTA V — это культовая игра в открытом мире, где вы играете за трех совершенно разных преступников, пытающихся провернуть крупнейшее ограбление в истории Лос-Сантоса.",
+        "Portal 2": "Portal 2 — это головоломка от первого лица, где вы используете портальную пушку для решения сложных задач в заброшенной лаборатории Aperture Science.",
+        "Elden Ring": "Elden Ring — это ролевая игра в открытом мире от создателей Dark Souls. Исследуйте таинственные земли Междуречья, сражайтесь с могущественными боссами и раскройте тайну Кольца Элден."
+    };
+    
+    return descriptions[gameName] || defaultescription || 'Описание временно недоступно. Игра предлагает увлекательный геймплей и захватывающий сюжет.';
+}
     render() {
         const widget = document.createElement('div');
         widget.className = 'widget random-game-widget';

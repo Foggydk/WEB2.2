@@ -3,36 +3,36 @@
 export class UIComponent {
     constructor(config) {
         this.id = config.id || `widget-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-        this.title = config.title || 'Виджет';
+        this.title = config.title || 'Р’РёРґР¶РµС‚';
         this.type = config.type || 'base';
         this.element = null;
         this.isMinimized = false;
     }
-
+    
     render() {
-        throw new Error('Метод render() должен быть реализован в дочернем классе');
+        throw new Error('РњРµС‚РѕРґ render() РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ СЂРµР°Р»РёР·РѕРІР°РЅ РІ РґРѕС‡РµСЂРЅРµРј РєР»Р°СЃСЃРµ');
     }
-
+    
     destroy() {
-        // Удаляем слушатели событий
+        // РЈРґР°Р»СЏРµРј СЃР»СѓС€Р°С‚РµР»Рё СЃРѕР±С‹С‚РёР№
         if (this.element) {
-            // Клонируем элемент, чтобы удалить все слушатели
+            // РљР»РѕРЅРёСЂСѓРµРј СЌР»РµРјРµРЅС‚, С‡С‚РѕР±С‹ СѓРґР°Р»РёС‚СЊ РІСЃРµ СЃР»СѓС€Р°С‚РµР»Рё
             const parent = this.element.parentNode;
             if (parent) {
                 parent.removeChild(this.element);
             }
         }
-
-        // Очищаем ссылки
+        
+        // РћС‡РёС‰Р°РµРј СЃСЃС‹Р»РєРё
         this.element = null;
     }
-
+    
     close() {
-        // Добавляем класс анимации
+        // Р”РѕР±Р°РІР»СЏРµРј РєР»Р°СЃСЃ Р°РЅРёРјР°С†РёРё
         if (this.element) {
             this.element.classList.add('removing');
-
-            // Отправляем событие после анимации
+            
+            // РћС‚РїСЂР°РІР»СЏРµРј СЃРѕР±С‹С‚РёРµ РїРѕСЃР»Рµ Р°РЅРёРјР°С†РёРё
             setTimeout(() => {
                 const event = new CustomEvent('closeWidget', {
                     detail: { widgetId: this.id }
@@ -40,24 +40,24 @@ export class UIComponent {
                 document.dispatchEvent(event);
             }, 300);
         } else {
-            // Если элемента нет, отправляем сразу
+            // Р•СЃР»Рё СЌР»РµРјРµРЅС‚Р° РЅРµС‚, РѕС‚РїСЂР°РІР»СЏРµРј СЃСЂР°Р·Сѓ
             const event = new CustomEvent('closeWidget', {
                 detail: { widgetId: this.id }
             });
             document.dispatchEvent(event);
         }
     }
-
+    
     minimize() {
         if (!this.element) return;
-
+        
         const content = this.element.querySelector('.widget-content');
         const footer = this.element.querySelector('.widget-footer');
         const icon = this.element.querySelector('.minimize-btn i');
-
+        
         if (content) {
             this.isMinimized = !this.isMinimized;
-
+            
             if (this.isMinimized) {
                 content.style.display = 'none';
                 if (footer) footer.style.display = 'none';
@@ -73,7 +73,7 @@ export class UIComponent {
             }
         }
     }
-
+    
     showToast(message, type = 'info') {
         const event = new CustomEvent('showToast', {
             detail: { message, type }

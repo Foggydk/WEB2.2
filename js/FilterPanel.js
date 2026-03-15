@@ -20,9 +20,9 @@ export class FilterPanel {
         
         panel.innerHTML = `
             <div class="filter-group">
-                <label>Жанр:</label>
+                <label>Genre:</label>
                 <select class="filter-select" id="genre-filter">
-                    <option value="all" selected>Все жанры</option>
+                    <option value="all" selected>All genres</option>
                     <option value="action">Action</option>
                     <option value="adventure">Adventure</option>
                     <option value="rpg">RPG</option>
@@ -36,9 +36,9 @@ export class FilterPanel {
             </div>
             
             <div class="filter-group">
-                <label>Платформа:</label>
+                <label>Platform:</label>
                 <select class="filter-select" id="platform-filter">
-                    <option value="all" selected>Все платформы</option>
+                    <option value="all" selected>All platforms</option>
                     <option value="pc">PC</option>
                     <option value="playstation">PlayStation</option>
                     <option value="xbox">Xbox</option>
@@ -49,28 +49,28 @@ export class FilterPanel {
             </div>
             
             <div class="filter-group">
-                <label>Рейтинг:</label>
+                <label>Rating:</label>
                 <select class="filter-select" id="rating-filter">
-                    <option value="all" selected>Любой рейтинг</option>
-                    <option value="high">Высокий (4.0+)</option>
-                    <option value="medium">Средний (3.0-3.9)</option>
-                    <option value="low">Низкий (<3.0)</option>
+                    <option value="all" selected>Any rating</option>
+                    <option value="high">High (4.0+)</option>
+                    <option value="medium">Medium (3.0-3.9)</option>
+                    <option value="low">Low (<3.0)</option>
                 </select>
             </div>
             
             <div class="filter-group">
-                <label>Год выпуска:</label>
+                <label>Release year:</label>
                 <select class="filter-select" id="year-filter">
-                    <option value="all" selected>Все годы</option>
+                    <option value="all" selected>All years</option>
                     <option value="2025-2026">2025-2026</option>
                     <option value="2020-2024">2020-2024</option>
                     <option value="2010-2019">2010-2019</option>
                     <option value="2000-2009">2000-2009</option>
-                    <option value="classic">Классика (до 2000)</option>
+                    <option value="classic">Classic (before 2000)</option>
                 </select>
             </div>
             
-            <button class="apply-filters">Применить фильтры</button>
+            <button class="apply-filters">Apply filters</button>
         `;
         
         this.element = panel;

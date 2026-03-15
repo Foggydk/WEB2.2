@@ -13,62 +13,77 @@ export class FilterPanel {
         this.isOpen = false;
         this.element = null;
     }
-
+    
     render() {
         const panel = document.createElement('div');
         panel.className = 'filter-panel';
-
+        
         panel.innerHTML = `
             <div class="filter-group">
-                <label>����:</label>
+                <label>Жанр:</label>
                 <select class="filter-select" id="genre-filter">
-                    ${CONFIG.FILTER_OPTIONS.genres.map(g =>
-            `<option value="${g.value}" ${this.filters.genre === g.value ? 'selected' : ''}>${g.label}</option>`
-        ).join('')}
+                    <option value="all" selected>Все жанры</option>
+                    <option value="action">Action</option>
+                    <option value="adventure">Adventure</option>
+                    <option value="rpg">RPG</option>
+                    <option value="strategy">Strategy</option>
+                    <option value="shooter">Shooter</option>
+                    <option value="puzzle">Puzzle</option>
+                    <option value="racing">Racing</option>
+                    <option value="sports">Sports</option>
+                    <option value="horror">Horror</option>
                 </select>
             </div>
             
             <div class="filter-group">
-                <label>���������:</label>
+                <label>Платформа:</label>
                 <select class="filter-select" id="platform-filter">
-                    ${CONFIG.FILTER_OPTIONS.platforms.map(p =>
-            `<option value="${p.value}" ${this.filters.platform === p.value ? 'selected' : ''}>${p.label}</option>`
-        ).join('')}
+                    <option value="all" selected>Все платформы</option>
+                    <option value="pc">PC</option>
+                    <option value="playstation">PlayStation</option>
+                    <option value="xbox">Xbox</option>
+                    <option value="nintendo">Nintendo</option>
+                    <option value="ios">iOS</option>
+                    <option value="android">Android</option>
                 </select>
             </div>
             
             <div class="filter-group">
-                <label>�������:</label>
+                <label>Рейтинг:</label>
                 <select class="filter-select" id="rating-filter">
-                    ${CONFIG.FILTER_OPTIONS.ratings.map(r =>
-            `<option value="${r.value}" ${this.filters.rating === r.value ? 'selected' : ''}>${r.label}</option>`
-        ).join('')}
+                    <option value="all" selected>Любой рейтинг</option>
+                    <option value="high">Высокий (4.0+)</option>
+                    <option value="medium">Средний (3.0-3.9)</option>
+                    <option value="low">Низкий (<3.0)</option>
                 </select>
             </div>
             
             <div class="filter-group">
-                <label>��� �������:</label>
+                <label>Год выпуска:</label>
                 <select class="filter-select" id="year-filter">
-                    ${CONFIG.FILTER_OPTIONS.years.map(y =>
-            `<option value="${y.value}" ${this.filters.year === y.value ? 'selected' : ''}>${y.label}</option>`
-        ).join('')}
+                    <option value="all" selected>Все годы</option>
+                    <option value="2025-2026">2025-2026</option>
+                    <option value="2020-2024">2020-2024</option>
+                    <option value="2010-2019">2010-2019</option>
+                    <option value="2000-2009">2000-2009</option>
+                    <option value="classic">Классика (до 2000)</option>
                 </select>
             </div>
             
-            <button class="apply-filters">��������� �������</button>
+            <button class="apply-filters">Применить фильтры</button>
         `;
-
+        
         this.element = panel;
         this.attachEventListeners();
-
+        
         return panel;
     }
-
+    
     attachEventListeners() {
         const applyBtn = this.element.querySelector('.apply-filters');
         applyBtn.addEventListener('click', () => this.applyFilters());
     }
-
+    
     applyFilters() {
         this.filters = {
             genre: this.element.querySelector('#genre-filter').value,
@@ -76,12 +91,12 @@ export class FilterPanel {
             rating: this.element.querySelector('#rating-filter').value,
             year: this.element.querySelector('#year-filter').value
         };
-
+        
         if (this.onApplyFilters) {
             this.onApplyFilters(this.filters);
         }
     }
-
+    
     toggle() {
         this.isOpen = !this.isOpen;
         if (this.element) {
